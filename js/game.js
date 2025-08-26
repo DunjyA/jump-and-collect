@@ -3,6 +3,10 @@ let config = {
   parent: 'game-container',
   width: 1280,
   height: 700,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+  },
   scene: {
     preload: preload,
     create: create,
@@ -108,41 +112,84 @@ function create() {
     repeat: -1,
   });
 
-  scoreText = this.add.text(16, 16, 'Score: 0', {
-    fontSize: '32px',
-    fill: 'white',
-    strokeThickness: 1,
-  });
+  // scoreText = this.add.text(16, 16, 'Score: 0', {
+  //   fontSize: '32px',
+  //   fill: 'white',
+  //   strokeThickness: 1,
+  // });
+  // scoreText.setOrigin(0, -1.2);
+  scoreText = this.add.text(
+    this.cameras.main.width * 0.02,
+    this.cameras.main.height * 0.12,
+    'Score: 0',
+    {
+      fontSize: Math.floor(this.cameras.main.width * 0.025) + 'px', // Dinamička veličina
+      fill: 'white',
+      strokeThickness: 1,
+    }
+  );
 
-  scoreText.setOrigin(0, -1.2);
+  // maxScoreText = this.add.text(16, 16, 'Highest score: ' + maxScore, {
+  //   fontSize: '32px',
+  //   fill: 'yellow',
+  //   strokeThickness: 1,
+  // });
+  // maxScoreText.setOrigin(0, 0);
+  maxScoreText = this.add.text(
+    this.cameras.main.width * 0.02,
+    this.cameras.main.height * 0.05,
+    'Highest score: ' + maxScore,
+    {
+      fontSize: Math.floor(this.cameras.main.width * 0.025) + 'px', // Dinamička veličina
+      fill: 'yellow',
+      strokeThickness: 1,
+    }
+  );
 
-  maxScoreText = this.add.text(16, 16, 'Highest score: ' + maxScore, {
-    fontSize: '32px',
-    fill: 'yellow',
-    strokeThickness: 1,
-  });
-
-  maxScoreText.setOrigin(0, 0);
-
-  endGameText = this.add.text(650, 300, 'GAME OVER\nPress R to Restart', {
-    fontSize: '75px',
-    fill: '#fff',
-    // fontWeight: 700,
-    stroke: '#000',
-    strokeThickness: 5,
-    align: 'center',
-  });
-
+  // endGameText = this.add.text(650, 300, 'GAME OVER\nPress R to Restart', {
+  //   fontSize: '75px',
+  //   fill: '#fff',
+  //   // fontWeight: 700,
+  //   stroke: '#000',
+  //   strokeThickness: 5,
+  //   align: 'center',
+  // });
+  // endGameText.setVisible(false);
+  endGameText = this.add.text(
+    this.cameras.main.centerX,
+    this.cameras.main.centerY,
+    'GAME OVER\nPress R to Restart',
+    {
+      fontSize: Math.floor(this.cameras.main.width * 0.05) + 'px', // 5% od širine
+      fill: '#fff',
+      stroke: '#000',
+      strokeThickness: 5,
+      align: 'center',
+    }
+  );
+  endGameText.setOrigin(0.5, 0.5);
   endGameText.setVisible(false);
 
-  startGameText = this.add.text(650, 300, 'Press SPACE to start the game', {
-    fontSize: '65px',
-    fill: '#fff',
-    //fontWeight: 700,
-    stroke: '#000',
-    strokeThickness: 5,
-    align: 'center',
-  });
+  // startGameText = this.add.text(650, 300, 'Press SPACE to start the game', {
+  //   fontSize: '65px',
+  //   fill: '#fff',
+  //   //fontWeight: 700,
+  //   stroke: '#000',
+  //   strokeThickness: 5,
+  //   align: 'center',
+  // });
+  startGameText = this.add.text(
+    this.cameras.main.centerX,
+    this.cameras.main.centerY,
+    'Press SPACE to start the game',
+    {
+      fontSize: Math.floor(this.cameras.main.width * 0.045) + 'px', // 4.5% od širine
+      fill: '#fff',
+      stroke: '#000',
+      strokeThickness: 5,
+      align: 'center',
+    }
+  );
 
   startGameText.setOrigin(0.5, 0.5);
   startGameText.setVisible(!gameStarted);
