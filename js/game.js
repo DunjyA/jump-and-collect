@@ -158,7 +158,7 @@ function create() {
   endGameText = this.add.text(
     this.cameras.main.centerX,
     this.cameras.main.centerY,
-    'GAME OVER\nPress R to Restart',
+    'GAME OVER\nPress R or TAP to Restart',
     {
       fontSize: Math.floor(this.cameras.main.width * 0.05) + 'px', // 5% od širine
       fill: '#fff',
@@ -181,7 +181,7 @@ function create() {
   startGameText = this.add.text(
     this.cameras.main.centerX,
     this.cameras.main.centerY,
-    'Press SPACE to start the game',
+    'Press SPACE or TAP to start',
     {
       fontSize: Math.floor(this.cameras.main.width * 0.045) + 'px', // 4.5% od širine
       fill: '#fff',
@@ -210,6 +210,8 @@ function create() {
       startGameText.setVisible(false);
     }
   });
+
+  this.input.on('pointerdown', handleTouch); //za telefon
 
   if (gameStarted) {
     releaseCoin(this);
@@ -340,4 +342,23 @@ function restartGame() {
   startGameText.setVisible(false);
   endGameText.setVisible(false);
   currentScene.scene.restart();
+}
+
+//za telefon
+function handlePointer(pointer) {
+  if (!gameStarted && !isGameOver) {
+    gameStarted = true;
+    releaseCoin(currentScene);
+    startGameText.setVisible(false);
+  }
+  // Skakanje tokom igre
+  else if (gameStarted && !isGameOver) {
+    if (runner.body.touching.down) {
+      runner.setVelocityY(-435);
+    }
+  }
+  // Restart nakon game over
+  else if (isGameOver) {
+    restartGame();
+  }
 }
