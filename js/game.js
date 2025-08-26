@@ -40,6 +40,11 @@ let collectSound;
 let failSound;
 let currentScene;
 
+//za telefon
+let isDragging = false;
+let dragStartX = 0;
+let dragCurrentX = 0;
+
 function preload() {
   maxScore = localStorage.getItem('maxScore') || 0;
   maxScore = parseInt(maxScore);
@@ -211,7 +216,9 @@ function create() {
     }
   });
 
-  this.input.on('pointerdown', handleTouch); //za telefon
+  this.input.on('pointerdown', handlePointerDown); //za telefon
+  this.input.on('pointermove', handlePointerMove);
+  this.input.on('pointerup', handlePointerUp);
 
   if (gameStarted) {
     releaseCoin(this);
@@ -234,7 +241,7 @@ function update() {
     runner.setVelocityX(400); //brzina trcanja
     runner.flipX = false;
     runner.anims.play('run', true);
-  } else {
+  } else if (!isDragging) {
     runner.setVelocityX(0); //brzina je 0
     runner.anims.play('stand', true); //akt se stand anim
   }
@@ -345,20 +352,80 @@ function restartGame() {
 }
 
 //za telefon
-function handleTouch(pointer) {
+
+// function handleTouch(pointer) {
+//   if (!gameStarted && !isGameOver) {
+//     gameStarted = true;
+//     releaseCoin(currentScene);
+//     startGameText.setVisible(false);
+//   }
+//   // Skakanje tokom igre
+//   else if (gameStarted && !isGameOver) {
+//     if (runner.body.touching.down) {
+//       runner.setVelocityY(-435);
+//     }
+//   }
+//   // Restart nakon game over
+//   else if (isGameOver) {
+//     restartGame();
+//   }
+// }
+
+function handlePointerDown(pointer) {
   if (!gameStarted && !isGameOver) {
     gameStarted = true;
     releaseCoin(currentScene);
     startGameText.setVisible(false);
+    return;
   }
-  // Skakanje tokom igre
-  else if (gameStarted && !isGameOver) {
-    if (runner.body.touching.down) {
-      runner.setVelocityY(-435);
+
+  if (isGameOver) {
+    restartGame();
+    return;
+  }
+
+  // Počni drag
+  isDragging = true;
+  dragStartX = pointer.x;
+  dragCurrentX = pointer.x;
+
+  // Skok
+  if (runner.body.touching.down) {
+    runner.setVelocityY(-435);
+  }
+}
+
+function handlePointerMove(pointer) {
+  if (!isDragging || !gameStarted || isGameOver) return;
+
+  dragCurrentX = pointer.x;
+
+  // Računaj razliku u kretanju
+  let dragDistance = dragCurrentX - dragStartX;
+
+  // Pomeri runner-a na osnovu drag-a
+  if (Math.abs(dragDistance) > 10) {
+    // Threshold da spreči slučajno kretanje
+    if (dragDistance > 0) {
+      // Drag desno
+      runner.setVelocityX(400);
+      runner.flipX = false;
+      runner.anims.play('run', true);
+    } else {
+      // Drag levo
+      runner.setVelocityX(-400);
+      runner.flipX = true;
+      runner.anims.play('run', true);
     }
   }
-  // Restart nakon game over
-  else if (isGameOver) {
-    restartGame();
+}
+
+function handlePointerUp(pointer) {
+  isDragging = false;
+
+  // Zaustavi runner-a kada se otpusti dodir
+  if (gameStarted && !isGameOver) {
+    runner.setVelocityX(0);
+    runner.anims.play('stand', true);
   }
 }
