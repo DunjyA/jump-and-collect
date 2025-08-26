@@ -33,6 +33,8 @@ body {
   height: 100%;
   /* object-fit: contain; */
   border-radius: 8px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 @media (min-width: 1400px) {

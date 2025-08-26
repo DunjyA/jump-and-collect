@@ -134,6 +134,11 @@ function create() {
     }
   );
 
+  scoreText.setPosition(
+    this.cameras.main.centerX - scoreText.width / 0.252,
+    this.cameras.main.centerY - scoreText.height / 0.12
+  );
+
   // maxScoreText = this.add.text(16, 16, 'Highest score: ' + maxScore, {
   //   fontSize: '32px',
   //   fill: 'yellow',
@@ -149,6 +154,11 @@ function create() {
       fill: 'yellow',
       strokeThickness: 1,
     }
+  );
+
+  maxScoreText.setPosition(
+    this.cameras.main.centerX - maxScoreText.width / 0.565,
+    this.cameras.main.centerY - maxScoreText.height / 0.1
   );
 
   // endGameText = this.add.text(650, 300, 'GAME OVER\nPress R to Restart', {
@@ -174,6 +184,10 @@ function create() {
   );
   endGameText.setOrigin(0.5, 0.5);
   endGameText.setVisible(false);
+  endGameText.setPosition(
+    this.cameras.main.centerX - endGameText.width * 0,
+    this.cameras.main.centerY - endGameText.height / 2
+  );
 
   // startGameText = this.add.text(650, 300, 'Press SPACE to start the game', {
   //   fontSize: '65px',
@@ -192,12 +206,16 @@ function create() {
       fill: '#fff',
       stroke: '#000',
       strokeThickness: 5,
-      align: 'center',
+      // align: 'center',
     }
   );
 
   startGameText.setOrigin(0.5, 0.5);
   startGameText.setVisible(!gameStarted);
+  startGameText.setPosition(
+    this.cameras.main.centerX - startGameText.width * 0,
+    this.cameras.main.centerY - startGameText.height / 2
+  );
 
   collectSound = this.sound.add('collect');
   failSound = this.sound.add('fail');
