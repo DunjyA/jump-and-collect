@@ -5,8 +5,10 @@ body {
   align-items: center;
   background-color: rgb(28, 35, 35);
   overflow: hidden;
+  margin: 0;
+  padding: 10px;
 }
-
+/*
 #game-container {
   max-width: 900px;
   margin: 0 auto;
@@ -16,11 +18,7 @@ body {
   justify-content: center;
   align-items: center;
 
-  /* position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); */
-}
+}*/
 
 #game-container canvas {
   width: 100%;
@@ -29,5 +27,10 @@ body {
   border-radius: 15px;
 }
 
-/* #end-game-text {
-} */
+#game-container {
+  width: min(90vw, 1280px); /* Maksimalno 90% širine ili 1280px */
+  height: min(70vh, 700px); /* Maksimalno 70% visine ili 700px */
+  min-width: 320px; /* Minimalna širina */
+  min-height: 240px; /* Minimalna visina */
+  border-radius: 15px;
+}
