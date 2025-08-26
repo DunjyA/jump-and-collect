@@ -345,7 +345,7 @@ function restartGame() {
 }
 
 //za telefon
-function handlePointer(pointer) {
+function handleTouch(pointer) {
   if (!gameStarted && !isGameOver) {
     gameStarted = true;
     releaseCoin(currentScene);
