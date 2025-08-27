@@ -1,16 +1,3 @@
-const MANUAL_ADJUSTMENTS = {
-  mac: {
-    scoreY: -8, // Podesite ovu vrednost za Score tekst na Mac-u
-    maxScoreY: -8, // Podesite ovu vrednost za Max Score tekst na Mac-u
-    centerY: -12, // Podesite ovu vrednost za centralne tekstove na Mac-u
-  },
-  windows: {
-    scoreY: 0, // Ostavite Windows na 0
-    maxScoreY: 0,
-    centerY: 0,
-  },
-};
-
 let config = {
   type: Phaser.AUTO,
   parent: 'game-container',
@@ -52,32 +39,12 @@ let gameStarted = false;
 let collectSound;
 let failSound;
 let currentScene;
+let textY;
 
 //za telefon
 let isDragging = false;
 let dragStartX = 0;
 let dragCurrentX = 0;
-
-function getPlatformYAdjustment() {
-  const userAgent = navigator.userAgent.toLowerCase();
-  const isMac = userAgent.includes('mac');
-
-  console.log('Detected platform:', isMac ? 'Mac' : 'Windows/Other');
-
-  if (isMac) {
-    return {
-      scoreOffset: MANUAL_ADJUSTMENTS.mac.scoreY,
-      maxScoreOffset: MANUAL_ADJUSTMENTS.mac.maxScoreY,
-      centerOffset: MANUAL_ADJUSTMENTS.mac.centerY,
-    };
-  } else {
-    return {
-      scoreOffset: MANUAL_ADJUSTMENTS.windows.scoreY,
-      maxScoreOffset: MANUAL_ADJUSTMENTS.windows.maxScoreY,
-      centerOffset: MANUAL_ADJUSTMENTS.windows.centerY,
-    };
-  }
-}
 
 function preload() {
   maxScore = localStorage.getItem('maxScore') || 0;
@@ -158,19 +125,6 @@ function create() {
   });
   scoreText.setOrigin(0, 0);
 
-  // scoreText = this.add.text(0, 0, 'Score: 0', {
-  //   fontFamily: 'Roboto, Arial, sans-serif',
-  //   fontSize: Math.floor(this.cameras.main.width * 0.025) + 'px',
-  //   fill: 'white',
-  //   strokeThickness: 1,
-  // });
-
-  // scoreText.setPosition(
-  //   this.cameras.main.width * 0.02,
-  //   this.cameras.main.height * 0.05
-  // );
-  // scoreText.setOrigin(0, 0);
-
   maxScoreText = this.add.text(16, 16, 'Highest score: ' + maxScore, {
     fontSize: '32px',
     fill: 'yellow',
@@ -178,31 +132,6 @@ function create() {
   });
   maxScoreText.setOrigin(0, -1);
 
-  // maxScoreText = this.add.text(
-  //   this.cameras.main.width * 0.02,
-  //   this.cameras.main.height * 0.05,
-  //   'Highest score: ' + maxScore,
-  //   {
-  //     fontSize: Math.floor(this.cameras.main.width * 0.025) + 'px', // Dinamička veličina
-  //     fill: 'yellow',
-  //     strokeThickness: 1,
-  //   }
-  // );
-
-  // maxScoreText.setPosition(
-  //   this.cameras.main.width * 0.02,
-  //   this.cameras.main.height * 0.05
-  // );
-
-  // endGameText = this.add.text(650, 300, 'GAME OVER\nPress R to Restart', {
-  //   fontSize: '75px',
-  //   fill: '#fff',
-  //   // fontWeight: 700,
-  //   stroke: '#000',
-  //   strokeThickness: 5,
-  //   align: 'center',
-  // });
-  // endGameText.setVisible(false);
   endGameText = this.add.text(
     this.cameras.main.centerX,
     this.cameras.main.centerY,
@@ -220,7 +149,22 @@ function create() {
   endGameText.setVisible(false);
   endGameText.y = this.cameras.main.centerY - endGameText.height / 2;
 
-  startGameText = this.add.text(650, 300, 'Press SPACE to start the game', {
+  // startGameText = this.add.text(650, 300, 'Press SPACE to start the game', {
+  //   fontSize: '65px',
+  //   fill: '#fff',
+  //   fontWeight: 700,
+  //   stroke: '#000',
+  //   strokeThickness: 5,
+  //   align: 'center',
+  // });
+
+  if (isMac) {
+    textY = 320;
+  } else {
+    textY = 100;
+  }
+
+  startGameText = this.add.text(650, textY, 'Press SPACE to start the game', {
     fontSize: '65px',
     fill: '#fff',
     fontWeight: 700,
@@ -228,24 +172,9 @@ function create() {
     strokeThickness: 5,
     align: 'center',
   });
-  // startGameText = this.add.text(
-  //   this.cameras.main.centerX,
-  //   this.cameras.main.centerY,
-  //   'Press SPACE or TAP to start',
-  //   {
-  //     fontSize: Math.floor(this.cameras.main.width * 0.045) + 'px', // 4.5% od širine
-  //     fill: '#fff',
-  //     stroke: '#000',
-  //     strokeThickness: 5,
-  //     // align: 'center',
-  //   }
-  // );
 
   startGameText.setOrigin(0.5, 0.5);
   startGameText.setVisible(!gameStarted);
-
-  const platformAdj = getPlatformYAdjustment();
-  console.log('Platform adjustments:', platformAdj);
 
   collectSound = this.sound.add('collect');
   failSound = this.sound.add('fail');
@@ -401,24 +330,6 @@ function restartGame() {
 
 //za telefon
 
-// function handleTouch(pointer) {
-//   if (!gameStarted && !isGameOver) {
-//     gameStarted = true;
-//     releaseCoin(currentScene);
-//     startGameText.setVisible(false);
-//   }
-//   // Skakanje tokom igre
-//   else if (gameStarted && !isGameOver) {
-//     if (runner.body.touching.down) {
-//       runner.setVelocityY(-435);
-//     }
-//   }
-//   // Restart nakon game over
-//   else if (isGameOver) {
-//     restartGame();
-//   }
-// }
-
 function handlePointerDown(pointer) {
   if (!gameStarted && !isGameOver) {
     gameStarted = true;
@@ -476,4 +387,10 @@ function handlePointerUp(pointer) {
     runner.setVelocityX(0);
     runner.anims.play('stand', true);
   }
+}
+
+//funkcionalnost za MacOS
+
+function isMac() {
+  return NavigationActivation.platofrm.toUpperCase().indexOf('MAC') >= 0;
 }
