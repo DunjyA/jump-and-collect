@@ -1,3 +1,16 @@
+const MANUAL_ADJUSTMENTS = {
+  mac: {
+    scoreY: -8, // Podesite ovu vrednost za Score tekst na Mac-u
+    maxScoreY: -8, // Podesite ovu vrednost za Max Score tekst na Mac-u
+    centerY: -12, // Podesite ovu vrednost za centralne tekstove na Mac-u
+  },
+  windows: {
+    scoreY: 0, // Ostavite Windows na 0
+    maxScoreY: 0,
+    centerY: 0,
+  },
+};
+
 let config = {
   type: Phaser.AUTO,
   parent: 'game-container',
@@ -44,6 +57,27 @@ let currentScene;
 let isDragging = false;
 let dragStartX = 0;
 let dragCurrentX = 0;
+
+function getPlatformYAdjustment() {
+  const userAgent = navigator.userAgent.toLowerCase();
+  const isMac = userAgent.includes('mac');
+
+  console.log('Detected platform:', isMac ? 'Mac' : 'Windows/Other');
+
+  if (isMac) {
+    return {
+      scoreOffset: MANUAL_ADJUSTMENTS.mac.scoreY,
+      maxScoreOffset: MANUAL_ADJUSTMENTS.mac.maxScoreY,
+      centerOffset: MANUAL_ADJUSTMENTS.mac.centerY,
+    };
+  } else {
+    return {
+      scoreOffset: MANUAL_ADJUSTMENTS.windows.scoreY,
+      maxScoreOffset: MANUAL_ADJUSTMENTS.windows.maxScoreY,
+      centerOffset: MANUAL_ADJUSTMENTS.windows.centerY,
+    };
+  }
+}
 
 function preload() {
   maxScore = localStorage.getItem('maxScore') || 0;
@@ -186,29 +220,32 @@ function create() {
   endGameText.setVisible(false);
   endGameText.y = this.cameras.main.centerY - endGameText.height / 2;
 
-  // startGameText = this.add.text(650, 300, 'Press SPACE to start the game', {
-  //   fontSize: '65px',
-  //   fill: '#fff',
-  //   //fontWeight: 700,
-  //   stroke: '#000',
-  //   strokeThickness: 5,
-  //   align: 'center',
-  // });
-  startGameText = this.add.text(
-    this.cameras.main.centerX,
-    this.cameras.main.centerY,
-    'Press SPACE or TAP to start',
-    {
-      fontSize: Math.floor(this.cameras.main.width * 0.045) + 'px', // 4.5% od širine
-      fill: '#fff',
-      stroke: '#000',
-      strokeThickness: 5,
-      // align: 'center',
-    }
-  );
+  startGameText = this.add.text(650, 300, 'Press SPACE to start the game', {
+    fontSize: '65px',
+    fill: '#fff',
+    fontWeight: 700,
+    stroke: '#000',
+    strokeThickness: 5,
+    align: 'center',
+  });
+  // startGameText = this.add.text(
+  //   this.cameras.main.centerX,
+  //   this.cameras.main.centerY,
+  //   'Press SPACE or TAP to start',
+  //   {
+  //     fontSize: Math.floor(this.cameras.main.width * 0.045) + 'px', // 4.5% od širine
+  //     fill: '#fff',
+  //     stroke: '#000',
+  //     strokeThickness: 5,
+  //     // align: 'center',
+  //   }
+  // );
 
   startGameText.setOrigin(0.5, 0.5);
   startGameText.setVisible(!gameStarted);
+
+  const platformAdj = getPlatformYAdjustment();
+  console.log('Platform adjustments:', platformAdj);
 
   collectSound = this.sound.add('collect');
   failSound = this.sound.add('fail');
