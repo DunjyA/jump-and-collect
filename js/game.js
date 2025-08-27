@@ -182,7 +182,7 @@ function create() {
       align: 'center',
     }
   );
-  endGameText.setOrigin(0.5, 0.5);
+  endGameText.setOrigin(0.5, 0);
   endGameText.setVisible(false);
   endGameText.y = this.cameras.main.centerY - endGameText.height / 2;
 
