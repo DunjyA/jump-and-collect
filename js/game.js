@@ -185,12 +185,7 @@ function create() {
   );
   endGameText.setOrigin(0.5, 0);
   endGameText.setVisible(false);
-  let lines = endGameText.text.split('\n').length;
-  let lineHeight =
-    parseInt(endGameText.style.fontSize) + (endGameText.style.lineSpacing || 0);
-  let textBlockHeight = lines * lineHeight;
-
-  endGameText.y = this.cameras.main.centerY - textBlockHeight / 2;
+  endGameText.y = this.cameras.main.centerY - endGameText.height / 2;
 
   // startGameText = this.add.text(650, 300, 'Press SPACE to start the game', {
   //   fontSize: '65px',
