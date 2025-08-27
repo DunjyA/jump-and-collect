@@ -117,47 +117,48 @@ function create() {
     repeat: -1,
   });
 
-  // scoreText = this.add.text(16, 16, 'Score: 0', {
-  //   fontSize: '32px',
-  //   fill: 'white',
-  //   strokeThickness: 1,
-  // });
-  // scoreText.setOrigin(0, 0);
-
-  scoreText = this.add.text(0, 0, 'Score: 0', {
-    fontFamily: 'Roboto, Arial, sans-serif',
-    fontSize: Math.floor(this.cameras.main.width * 0.025) + 'px',
+  scoreText = this.add.text(16, 16, 'Score: 0', {
+    fontSize: '32px',
     fill: 'white',
     strokeThickness: 1,
   });
-
-  scoreText.setPosition(
-    this.cameras.main.width * 0.02,
-    this.cameras.main.height * 0.05
-  );
   scoreText.setOrigin(0, 0);
 
-  // maxScoreText = this.add.text(16, 16, 'Highest score: ' + maxScore, {
-  //   fontSize: '32px',
-  //   fill: 'yellow',
+  // scoreText = this.add.text(0, 0, 'Score: 0', {
+  //   fontFamily: 'Roboto, Arial, sans-serif',
+  //   fontSize: Math.floor(this.cameras.main.width * 0.025) + 'px',
+  //   fill: 'white',
   //   strokeThickness: 1,
   // });
-  // maxScoreText.setOrigin(0, 0);
-  maxScoreText = this.add.text(
-    this.cameras.main.width * 0.02,
-    this.cameras.main.height * 0.05,
-    'Highest score: ' + maxScore,
-    {
-      fontSize: Math.floor(this.cameras.main.width * 0.025) + 'px', // Dinamička veličina
-      fill: 'yellow',
-      strokeThickness: 1,
-    }
-  );
 
-  maxScoreText.setPosition(
-    this.cameras.main.width * 0.02,
-    this.cameras.main.height * 0.05
-  );
+  // scoreText.setPosition(
+  //   this.cameras.main.width * 0.02,
+  //   this.cameras.main.height * 0.05
+  // );
+  // scoreText.setOrigin(0, 0);
+
+  maxScoreText = this.add.text(16, 16, 'Highest score: ' + maxScore, {
+    fontSize: '32px',
+    fill: 'yellow',
+    strokeThickness: 1,
+  });
+  maxScoreText.setOrigin(0, -1);
+
+  // maxScoreText = this.add.text(
+  //   this.cameras.main.width * 0.02,
+  //   this.cameras.main.height * 0.05,
+  //   'Highest score: ' + maxScore,
+  //   {
+  //     fontSize: Math.floor(this.cameras.main.width * 0.025) + 'px', // Dinamička veličina
+  //     fill: 'yellow',
+  //     strokeThickness: 1,
+  //   }
+  // );
+
+  // maxScoreText.setPosition(
+  //   this.cameras.main.width * 0.02,
+  //   this.cameras.main.height * 0.05
+  // );
 
   // endGameText = this.add.text(650, 300, 'GAME OVER\nPress R to Restart', {
   //   fontSize: '75px',
