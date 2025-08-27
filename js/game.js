@@ -122,22 +122,20 @@ function create() {
   //   fill: 'white',
   //   strokeThickness: 1,
   // });
-  // scoreText.setOrigin(0, -1.2);
-  scoreText = this.add.text(
-    this.cameras.main.width * 0.02,
-    this.cameras.main.height * 0.12,
-    'Score: 0',
-    {
-      fontSize: Math.floor(this.cameras.main.width * 0.025) + 'px', // Dinamička veličina
-      fill: 'white',
-      strokeThickness: 1,
-    }
-  );
+  // scoreText.setOrigin(0, 0);
+
+  scoreText = this.add.text(0, 0, 'Score: 0', {
+    fontFamily: 'Roboto, Arial, sans-serif',
+    fontSize: Math.floor(this.cameras.main.width * 0.025) + 'px',
+    fill: 'white',
+    strokeThickness: 1,
+  });
 
   scoreText.setPosition(
     this.cameras.main.width * 0.02,
-    this.cameras.main.height * 0.12
+    this.cameras.main.height * 0.05
   );
+  scoreText.setOrigin(0, 0);
 
   // maxScoreText = this.add.text(16, 16, 'Highest score: ' + maxScore, {
   //   fontSize: '32px',
