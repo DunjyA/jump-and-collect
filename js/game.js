@@ -30,6 +30,7 @@ let coins;
 let scoreText;
 let maxScoreText;
 let endGameText;
+let endGameTextTwo;
 let startGameText;
 let score = 0;
 let maxScore = 0;
@@ -40,6 +41,10 @@ let collectSound;
 let failSound;
 let currentScene;
 let textY;
+let textYEndGameOne;
+let textYEndGameTwo;
+let textYScore;
+let textYMaxScore;
 
 //za telefon
 let isDragging = false;
@@ -118,50 +123,18 @@ function create() {
     repeat: -1,
   });
 
-  scoreText = this.add.text(16, 16, 'Score: 0', {
-    fontSize: '32px',
-    fill: 'white',
-    strokeThickness: 1,
-  });
-  scoreText.setOrigin(0, 0);
-
-  maxScoreText = this.add.text(16, 16, 'Highest score: ' + maxScore, {
-    fontSize: '32px',
-    fill: 'yellow',
-    strokeThickness: 1,
-  });
-  maxScoreText.setOrigin(0, -1);
-
-  endGameText = this.add.text(
-    this.cameras.main.centerX,
-    this.cameras.main.centerY,
-    'GAME OVER\nPress R or TAP to Restart',
-    {
-      fontSize: Math.floor(this.cameras.main.width * 0.05) + 'px', // 5% od širine
-      fill: '#fff',
-      stroke: '#000',
-      strokeThickness: 5,
-      align: 'center',
-      linespacing: 10,
-    }
-  );
-  endGameText.setOrigin(0.5, 0);
-  endGameText.setVisible(false);
-  endGameText.y = this.cameras.main.centerY - endGameText.height / 2;
-
-  // startGameText = this.add.text(650, 300, 'Press SPACE to start the game', {
-  //   fontSize: '65px',
-  //   fill: '#fff',
-  //   fontWeight: 700,
-  //   stroke: '#000',
-  //   strokeThickness: 5,
-  //   align: 'center',
-  // });
-
-  if (isMac) {
-    textY = 320;
+  if (isMac()) {
+    textY = 230;
+    textYEndGameOne = 180;
+    textYEndGameTwo = 200;
+    textYScore = -130;
+    textYMaxScore = -490;
   } else {
-    textY = 100;
+    textY = 300;
+    textYEndGameOne = 280;
+    textYEndGameTwo = 300;
+    textYScore = 80;
+    textYMaxScore = 0;
   }
 
   startGameText = this.add.text(650, textY, 'Press SPACE to start the game', {
@@ -175,6 +148,59 @@ function create() {
 
   startGameText.setOrigin(0.5, 0.5);
   startGameText.setVisible(!gameStarted);
+
+  scoreText = this.add.text(16, textYScore, 'Score: 0', {
+    fontSize: '32px',
+    fill: 'white',
+    strokeThickness: 1,
+  });
+  scoreText.setOrigin(0, 0);
+
+  maxScoreText = this.add.text(
+    16,
+    textYMaxScore,
+    'Highest score: ' + maxScore,
+    {
+      fontSize: '32px',
+      fill: 'yellow',
+      strokeThickness: 1,
+    }
+  );
+  maxScoreText.setOrigin(0, -1);
+
+  endGameText = this.add.text(650, textYEndGameOne, 'GAME OVER', {
+    fontSize: Math.floor(this.cameras.main.width * 0.05) + 'px', // 5% od širine
+    fill: '#fff',
+    stroke: '#000',
+    strokeThickness: 5,
+    align: 'center',
+  });
+  endGameText.setOrigin(0.5, 0.5);
+  endGameText.setVisible(false);
+
+  endGameTextTwo = this.add.text(
+    650,
+    textYEndGameTwo,
+    'Press R or TAP to Restart',
+    {
+      fontSize: Math.floor(this.cameras.main.width * 0.05) + 'px', // 5% od širine
+      fill: '#fff',
+      stroke: '#000',
+      strokeThickness: 5,
+      align: 'center',
+    }
+  );
+  endGameTextTwo.setOrigin(0.5, 0.5);
+  endGameTextTwo.setVisible(false);
+
+  // startGameText = this.add.text(650, 300, 'Press SPACE to start the game', {
+  //   fontSize: '65px',
+  //   fill: '#fff',
+  //   fontWeight: 700,
+  //   stroke: '#000',
+  //   strokeThickness: 5,
+  //   align: 'center',
+  // });
 
   collectSound = this.sound.add('collect');
   failSound = this.sound.add('fail');
@@ -313,6 +339,9 @@ function gameOver() {
   startGameText.setVisible(false);
   endGameText.setVisible(true);
   endGameText.setOrigin(0.5, 0.5);
+  endGameTextTwo.setVisible(true);
+  endGameTextTwo.setOrigin(0.5, 0.5);
+  endGameTextTwo.setY(endGameTextTwo.y + 50);
 }
 
 function restartGame() {
@@ -325,6 +354,7 @@ function restartGame() {
 
   startGameText.setVisible(false);
   endGameText.setVisible(false);
+  endGameTextTwo.setVisible(false);
   currentScene.scene.restart();
 }
 
@@ -392,5 +422,9 @@ function handlePointerUp(pointer) {
 //funkcionalnost za MacOS
 
 function isMac() {
-  return NavigationActivation.platofrm.toUpperCase().indexOf('MAC') >= 0;
+  if (navigator.userAgentData) {
+    return navigator.userAgentData.platform === 'macOS';
+  }
+
+  return NavigationActivation.platoform.toUpperCase().indexOf('MAC') >= 0;
 }
