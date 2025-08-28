@@ -130,7 +130,7 @@ function create() {
     textYScore = -130;
     textYMaxScore = -490;
   } else {
-    textY = 300;
+    textY = 330;
     textYEndGameOne = 280;
     textYEndGameTwo = 300;
     textYScore = 80;
